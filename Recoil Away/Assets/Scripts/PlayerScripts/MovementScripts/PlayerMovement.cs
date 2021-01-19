@@ -84,9 +84,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Flip()
     {
+        GameObject weapon;
+        weapon = GameObject.Find("WeaponHolder");
+
+        Vector3 weaponScale = weapon.transform.localScale;
+        weaponScale.x *= -1;
+
         facingRight = !facingRight;
         Vector3 scalar = transform.localScale;
         scalar.x *= -1;
         transform.localScale = scalar;
+
+        weapon.transform.localScale = weaponScale;
     }
 }
