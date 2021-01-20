@@ -359,7 +359,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -378,8 +378,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  jumpForce: 5
+  jumpForce: 4
   extraJumps: 0
+  jumpTimer: 0.35
   groundCheck: {fileID: 5734723353372339933}
   whatIsGround:
     serializedVersion: 2

@@ -8,13 +8,16 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     public float jumpForce;
     public int extraJumps;
+    public float jumpTimer;
     private int jumpReset;
 
     private float moveInput;
-    private float checkRadius = 0.5f;
+    private float checkRadius = 0.25f;
+    private float jumpTimerReset;
 
     private bool facingRight = true;
     private bool isGrounded;
+    private bool isJumping;
 
 
     Vector2 velocity;
@@ -30,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
 
         jumpReset = extraJumps;
+        jumpTimerReset = jumpTimer;
     }
 
     void Update()
@@ -43,6 +47,15 @@ public class PlayerMovement : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0 && isGrounded)
         {
             Jump();
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+        }
+
+        if (Input.GetKey(KeyCode.Space) && isJumping)
+        {
+            AdvancedJump();
         }
 
         if (isGrounded)
@@ -80,6 +93,22 @@ public class PlayerMovement : MonoBehaviour
         velocity = Vector2.up * jumpForce;
         rb.velocity = velocity;
         extraJumps--;
+        isJumping = true;
+        jumpTimer = jumpTimerReset;
+    }
+
+    private void AdvancedJump()
+    {
+        if (jumpTimer > 0)
+        {
+            velocity = Vector2.up * jumpForce;
+            rb.velocity = velocity;
+            jumpTimer -= Time.deltaTime;
+        }
+        else
+        {
+            isJumping = false;
+        }
     }
 
     void Flip()
