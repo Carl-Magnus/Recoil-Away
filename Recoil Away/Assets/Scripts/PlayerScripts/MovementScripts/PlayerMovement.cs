@@ -12,8 +12,11 @@ public class PlayerMovement : MonoBehaviour
     private int jumpReset;
 
     private float moveInput;
+    private float lastMoveInput;
     private float checkRadius = 0.25f;
     private float jumpTimerReset;
+    private float maxSpeed;
+    private float maxJumpSpeed;
 
     private bool facingRight = true;
     private bool isGrounded;
@@ -34,10 +37,14 @@ public class PlayerMovement : MonoBehaviour
 
         jumpReset = extraJumps;
         jumpTimerReset = jumpTimer;
+        maxSpeed = 2.9f;
+        maxJumpSpeed = 5f;
     }
 
     void Update()
     {
+        lastMoveInput = moveInput;
+
         Move();
 
         if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
@@ -66,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, 10);
     }
 
     private void Move()
@@ -74,9 +81,11 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
         moveInput = Input.GetAxisRaw("Horizontal");
 
-        velocity = new Vector2(moveInput * speed, rb.velocity.y);
-
-        rb.velocity = velocity;
+        if (rb.velocity.magnitude < maxSpeed)
+        {
+            Vector2 movement = new Vector2(moveInput, 0);
+            rb.AddForce(speed * movement);
+        }
 
         if (!facingRight && moveInput > 0)
         {
@@ -90,8 +99,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        velocity = Vector2.up * jumpForce;
-        rb.velocity = velocity;
+        //velocity = Vector2.up * jumpForce;
+        //rb.velocity = velocity;
+
+        Vector2 jumpMovement = new Vector2(0, jumpForce);
+        rb.AddForce(jumpMovement);
         extraJumps--;
         isJumping = true;
         jumpTimer = jumpTimerReset;
@@ -99,10 +111,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void AdvancedJump()
     {
-        if (jumpTimer > 0)
+        if (jumpTimer > 0 && rb.velocity.magnitude < maxJumpSpeed)
         {
-            velocity = Vector2.up * jumpForce;
-            rb.velocity = velocity;
+            Vector2 jumpMovement = new Vector2(0, jumpForce);
+            rb.AddForce(jumpMovement);
             jumpTimer -= Time.deltaTime;
         }
         else

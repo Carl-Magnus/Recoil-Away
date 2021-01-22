@@ -226,6 +226,7 @@ MonoBehaviour:
   projectile: {fileID: 697688189051781775, guid: aefc19b367464ff419c7620adcb78148,
     type: 3}
   shotPoint: {fileID: 5734723354368531923}
+  recoilForce: 300
 --- !u!1 &5734723353578526632
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +634,7 @@ MonoBehaviour:
   projectile: {fileID: 697688189051781775, guid: aefc19b367464ff419c7620adcb78148,
     type: 3}
   shotPoint: {fileID: 5734723354368531923}
+  recoilForce: 3000
 --- !u!1 &5734723354368531924
 GameObject:
   m_ObjectHideFlags: 0

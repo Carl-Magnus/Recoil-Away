@@ -8,6 +8,8 @@ public class FireWeapon : MonoBehaviour
 
     public Transform shotPoint;
 
+    public float recoilForce;
+
     private float timeBetweenShots;
     private float timeBetweenShotsReset;
 
@@ -24,6 +26,7 @@ public class FireWeapon : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Shoot();
+                RecoilKnockback();
                 timeBetweenShots = timeBetweenShotsReset;
             }
         }
@@ -36,6 +39,14 @@ public class FireWeapon : MonoBehaviour
     private void Shoot()
     {
         Instantiate(projectile, shotPoint.position, transform.rotation);
+    }
+
+    private void RecoilKnockback()
+    {
+        Rigidbody2D knockbackBody = gameObject.GetComponentInParent<Rigidbody2D>();
+
+        knockbackBody.AddForce(recoilForce * (transform.right * -1));
+
     }
 }
 
