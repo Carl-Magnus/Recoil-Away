@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private float maxJumpSpeed;
 
     private bool facingRight = true;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isJumping;
 
 
